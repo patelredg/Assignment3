@@ -1,21 +1,21 @@
 package library;
 
 import java.awt.CardLayout;
-import javax.swing.JPanel;
-
 import java.util.Map;
 import java.util.HashMap;
 
 import library.interfaces.EBorrowState;
 import library.interfaces.IBorrowUI;
 import library.interfaces.IBorrowUIListener;
-import library.panels.borrow.ABorrowPanel;
-import library.panels.borrow.ConfirmLoanPanel;
-import library.panels.borrow.RestrictedPanel;
-import library.panels.borrow.ScanningPanel;
-import library.panels.borrow.SwipeCardPanel;
+import library.panels.ABorrowPanel;
+import library.panels.RestrictedPanel;
+import library.panels.CancelledPanel;
+import library.panels.CompletedPanel;
+import library.panels.SwipeCardPanel;
+import library.panels.ConfirmLoanPanel;
+import library.panels.ScanningPanel;
 
-public class BorrowUC_UI extends JPanel implements IBorrowUI {
+public class BorrowUC_UI extends ABorrowPanel {
 
 	private static final long serialVersionUID = 1L;
 	@SuppressWarnings("unused")
@@ -33,8 +33,8 @@ public class BorrowUC_UI extends JPanel implements IBorrowUI {
 		addPanel(new ScanningPanel(listener),    EBorrowState.SCANNING_BOOKS);
 		addPanel(new RestrictedPanel(listener),  EBorrowState.BORROWING_RESTRICTED);
 		addPanel(new ConfirmLoanPanel(listener), EBorrowState.CONFIRMING_LOANS);
-		//addPanel(new CancelledPanel(),           EBorrowState.CANCELLED);
-		//addPanel(new CompletedPanel(),           EBorrowState.COMPLETED);
+		addPanel(new CancelledPanel(),           EBorrowState.CANCELLED);
+		addPanel(new CompletedPanel(),           EBorrowState.COMPLETED);
 	}
 	
 	private void addPanel(ABorrowPanel panel, EBorrowState state) {
@@ -51,25 +51,21 @@ public class BorrowUC_UI extends JPanel implements IBorrowUI {
 		case INITIALIZED:
 			cl.show(this, state.toString());
 			break;
-			
 		case SCANNING_BOOKS:
 			cl.show(this, state.toString());
 			break;
-			
-		case BORROWING_RESTRICTED:
-			cl.show(this, state.toString());
-			break;
-			
 		case CONFIRMING_LOANS:
 			cl.show(this, state.toString());
 			break;
-
- 		case COMPLETED:
+		case BORROWING_RESTRICTED:
+			cl.show(this, state.toString());
 			break;
-			
+		case COMPLETED:
+			cl.show(this, state.toString());
+			break;
 		case CANCELLED:
+			cl.show(this, state.toString());
 			break;
-			
 		default:
 			throw new RuntimeException("Unknown state");
 		}
@@ -106,13 +102,6 @@ public class BorrowUC_UI extends JPanel implements IBorrowUI {
 
 	
 	@Override
-	public void displayOverFineLimitMessage(float amountOwing) {
-		IBorrowUI ui = panels.get(state);
-		ui.displayOverFineLimitMessage(amountOwing);				
-	}
-
-	
-	@Override
 	public void displayExistingLoan(String loanDetails) {
 		IBorrowUI ui = panels.get(state);
 		ui.displayExistingLoan(loanDetails);		
@@ -145,6 +134,5 @@ public class BorrowUC_UI extends JPanel implements IBorrowUI {
 		IBorrowUI ui = panels.get(state);
 		ui.displayErrorMessage(errorMesg);		
 	}
-
 
 }
