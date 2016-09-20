@@ -27,21 +27,29 @@ public class Printer extends JFrame implements IPrinter {
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 20, 375, 280);
+		panel.add(scrollPane);
+		
+		textArea = new JTextArea();
+		textArea.setEditable(false);
+		scrollPane.setViewportView(textArea);
 
 		textArea = new JTextArea();
 		textArea.setEditable(false);
-		//textArea.setBounds(10, 20, 375, 280);
-		//textArea.setColumns(40);
-		//textArea.setRows(80);
-		
-		JScrollPane scrollPane = new JScrollPane(textArea);
-		scrollPane.setBounds(10, 20, 375, 280);
-		panel.add(scrollPane);
+		textArea.setBounds(10, 20, 375, 280);
+		panel.add(textArea);		
 	}
 
 	@Override
 	public void print(String printData) {
-		textArea.setText(printData);
-		textArea.setCaretPosition(textArea.getLineCount());		
+		StringBuilder bld = new StringBuilder();
+		bld.append(textArea.getText());
+		if (bld.length() > 0) {
+			bld.append("\n\n");
+		}
+		bld.append(printData);
+		textArea.setText(bld.toString());
+		textArea.setCaretPosition(0);		
 	}
 }
