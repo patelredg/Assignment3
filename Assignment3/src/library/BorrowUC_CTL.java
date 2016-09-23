@@ -237,5 +237,12 @@ public class BorrowUC_CTL implements ICardReaderListener,
 		System.out.println("Loans Rejected");
 		setState(EBorrowState.SCANNING_BOOKS);		
 	}
+
+	public int getScanCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	
 	
 }
